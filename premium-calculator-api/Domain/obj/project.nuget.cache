@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "9DofspxYVNACTinh3VxSeicIR+ww/89j5Bboja1W+04UMoVMAYOkVlH1KjT9jHrPj//0jKRhRPRKYA1npURCdw==",
+  "success": true,
+  "projectFilePath": "D:\\Tests\\TAL\\premium-calculator-api\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
