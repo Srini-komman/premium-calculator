@@ -26,7 +26,7 @@ namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=blog.db");
+            optionsBuilder.UseSqlite("Data Source=PremiumCalculator.db");
         }
         public DbSet<Customer> Customers { get; set; }
     }

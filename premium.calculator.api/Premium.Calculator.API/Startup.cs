@@ -30,7 +30,8 @@ namespace API
             services.AddDbContext<PremiumCalculatorDbContext>(opt =>
             {
                 // Using sqLite as a data source for this test.
-                opt.UseSqlite(Configuration.GetConnectionString("PremiumCalcConnection"));
+                string strConnectionString = Configuration.GetConnectionString("PremiumCalcConnection");
+                opt.UseSqlite(strConnectionString);
             });
             services.AddControllers();
         }
