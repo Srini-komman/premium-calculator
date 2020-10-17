@@ -9,10 +9,6 @@
     <ProjectReference Include="..\Premium.Calculator.Domain\Premium.Calculator.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>

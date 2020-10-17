@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Premium.Calculator.Persistence.Repositories
+namespace Premium.Calculator.Persistence.Repositories.Customer
 {
-    interface ICustomerRepository
+    public interface ICustomerRepository
     {
     }
 }
