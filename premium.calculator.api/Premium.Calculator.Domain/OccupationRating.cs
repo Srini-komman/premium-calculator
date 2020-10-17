@@ -6,8 +6,9 @@ namespace Premium.Calculator.Domain
 {
     public class OccupationRating
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Factor { get; set; }
+        public virtual ICollection<Occupation> Occupations { get; set; }
     }
 }

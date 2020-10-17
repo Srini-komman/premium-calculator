@@ -18,10 +18,15 @@ namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+            builder.Entity<Customer>()
+                .HasData(
+                new Customer { }
+                );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,5 +34,8 @@ namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
             optionsBuilder.UseSqlite("Data Source=PremiumCalculator.db");
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Occupation> Occupations { get; set; }
+        public DbSet<OccupationRating> OccupationRatings { get; set; }
+
     }
 }
