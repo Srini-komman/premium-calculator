@@ -4,7 +4,7 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { CustomerDetails } from './components/customer/CustomerDetails';
 import { Error } from './components/error/Error';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
