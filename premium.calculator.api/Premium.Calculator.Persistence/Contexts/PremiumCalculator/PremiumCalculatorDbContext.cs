@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Premium.Calculator.Domain;
+using System.ComponentModel;
 
 namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
 {
@@ -23,10 +24,19 @@ namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            // Setting up the relationship(Primary key and Foriegn key) between Customer and Occupation
             builder.Entity<Customer>()
-                .HasData(
-                new Customer { }
-                );
+                .HasOne(c => c.Occupation)
+                .WithMany(o => o.Customers)
+                .HasForeignKey(o => o.OccupationId);
+
+            // Setting up the relationship(Primary key and Foriegn key) between Occupation and Occupation Rating
+            builder.Entity<Occupation>()
+                .HasOne(or => or.OccupationRating)
+                .WithMany(o => o.Occupations)
+                .HasForeignKey(or => or.OccupationRatingId);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
