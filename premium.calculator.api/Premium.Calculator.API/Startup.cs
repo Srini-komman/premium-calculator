@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Premium.Calculator.Persistence.Contexts.PremiumCalculator;
+using Premium.Calculator.Persistence.Repositories;
+using Premium.Calculator.Persistence.Repositories.Customer;
 
 namespace API
 {
@@ -33,7 +35,17 @@ namespace API
                 string strConnectionString = Configuration.GetConnectionString("PremiumCalcConnection");
                 opt.UseSqlite(strConnectionString);
             });
+
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5000/");
+                });
+            });
             services.AddControllers();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +67,8 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors("CorsPolicy");
         }
     }
 }

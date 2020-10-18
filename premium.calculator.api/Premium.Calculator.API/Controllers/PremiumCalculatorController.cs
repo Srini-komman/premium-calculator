@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Premium.Calculator.Domain;
+using Premium.Calculator.Persistence.Repositories;
 
 namespace DatingApp.API.Controllers
 {
@@ -10,11 +12,17 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class PremiumCalculatorController : ControllerBase
     {
+        private readonly UnitOfWork unitOfWork;
+        public PremiumCalculatorController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork as UnitOfWork;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<Customer>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var customers = this.unitOfWork.CustomerRepository.GetAll();
+            return Ok(customers);
         }
 
         // GET api/values/5
