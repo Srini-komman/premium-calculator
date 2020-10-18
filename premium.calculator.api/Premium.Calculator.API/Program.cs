@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Premium.Calculator.Persistence.Contexts.PremiumCalculator;
+using Premium.Calculator.Persistence;
+using Microsoft.EntityFrameworkCore.Storage;
+using Premium.Calculator.Domain;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace API
 {
@@ -22,8 +26,9 @@ namespace API
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<PremiumCalculatorDbContext>();
+                    PremiumCalculatorDbContext context = services.GetRequiredService<PremiumCalculatorDbContext>();
                     context.Database.Migrate();
+                    Seed.SeedData(context);                                                            
                 }
                 catch (Exception ex)
                 {
@@ -32,7 +37,7 @@ namespace API
                 }
             }
             host.Run();
-            //CreateHostBuilder(args).Build().Run();
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -7,8 +7,46 @@ using System.Text;
 
 namespace Premium.Calculator.Persistence
 {
-    class Seed
+    public class Seed
     {
+        
+        /// <summary>
+        /// This method is used to generate deed data for OccupationRatings Entity
+        /// </summary>
+        /// <returns>Returns list of OccupationRating entities</returns>
+        private static IList<OccupationRating> GetOccupationRatingsSeedData()
+        {
+            var occupationRatingsSeedData = new List<OccupationRating>
+            {
+                new OccupationRating
+                {
+                    Id = 1,
+                    Name = "Professional"
+                },
+                new OccupationRating
+                {
+                    Id = 2,
+                    Name = "White Collar"
+                },
+                new OccupationRating
+                {
+                    Id = 3,
+                    Name = "Light Manual"
+                },
+                new OccupationRating
+                {
+                    Id = 4,
+                    Name = "Heavy Manual"
+                }
+            };
+
+            return occupationRatingsSeedData;
+        }
+
+        /// <summary>
+        /// This method is used to generate deed data for Occupation Entity
+        /// </summary>
+        /// <returns>Returns list of Occupation entities</returns>
         private static IList<Occupation> GetOccupationsSeedData()
         {
             var occupationsSeedData = new List<Occupation>
@@ -16,7 +54,7 @@ namespace Premium.Calculator.Persistence
                 new Occupation
                 {
                     Id = 1,
-                    Name = "Cleaner",                    
+                    Name = "Cleaner",
                     OccupationRatingId = 3
                 },
                 new Occupation
@@ -54,35 +92,10 @@ namespace Premium.Calculator.Persistence
             return occupationsSeedData;
         }
 
-        private static IList<OccupationRating> GetOccupationRatingsSeedData()
-        {
-            var occupationRatingsSeedData = new List<OccupationRating>
-            {
-                new OccupationRating
-                {
-                    Id = 1,
-                    Name = "Professional"
-                },
-                new OccupationRating
-                {
-                    Id = 2,
-                    Name = "White Collar"
-                },
-                new OccupationRating
-                {
-                    Id = 3,
-                    Name = "Light Manual"
-                },
-                new OccupationRating
-                {
-                    Id = 4,
-                    Name = "Heavy Manual"
-                }
-            };
-
-            return occupationRatingsSeedData;
-        }
-
+        /// <summary>
+        /// This method is used to create dats into local database SqLite
+        /// </summary>
+        /// <returns>Returns list of Customer entities</returns>
         private static IList<Customer> GetCustomersSeedData()
         {
             var customersSeedData = new List<Customer>
@@ -108,19 +121,29 @@ namespace Premium.Calculator.Persistence
             return customersSeedData;
         }
 
+        /// <summary>
+        /// This method is used to generate deed data for Customer Entity
+        /// </summary>
+        /// <param name="context"></param>
         public static void SeedData(PremiumCalculatorDbContext context)
         {
             if (!context.OccupationRatings.Any())
             {
-                var occupations = GetOccupationRatingsSeedData();
+                var occupationRatings = GetOccupationRatingsSeedData();
+                context.OccupationRatings.AddRange(occupationRatings);
+                context.SaveChanges();
             }
             if (!context.Occupations.Any())
             {
-                var occupationRatings = GetOccupationsSeedData();
+                var occupations = GetOccupationsSeedData();
+                context.Occupations.AddRange(occupations);
+                context.SaveChanges();
             }
             if (!context.Customers.Any())
             {
                 var customers = GetCustomersSeedData();
+                context.Customers.AddRange(customers);
+                context.SaveChanges();
             }
         }
     }
