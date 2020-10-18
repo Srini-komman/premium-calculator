@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Premium.Calculator.Domain;
 using Premium.Calculator.Persistence.Repositories;
 
@@ -19,9 +20,10 @@ namespace DatingApp.API.Controllers
         }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Customer>> Get()
+        public async Task<ActionResult<IEnumerable<Customer>>> Get()
         {
-            var customers = this.unitOfWork.CustomerRepository.GetAll();
+            List<Customer> customers = await this.unitOfWork.CustomerRepository.GetCustomerWithOccupationAsync();
+            
             return Ok(customers);
         }
 

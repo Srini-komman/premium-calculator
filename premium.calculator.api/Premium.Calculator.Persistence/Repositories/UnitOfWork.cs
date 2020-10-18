@@ -4,52 +4,50 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Domains = Premium.Calculator.Domain;
-using Premium.Calculator.Persistence.Repositories.Customer;
+using CustomerRepo = Premium.Calculator.Persistence.Repositories.Customer;
+using OccupationRepo = Premium.Calculator.Persistence.Repositories.Occupation;
+using OccupationRatingRepo = Premium.Calculator.Persistence.Repositories.OccupationRating;
 
 namespace Premium.Calculator.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly PremiumCalculatorDbContext premiumCalculatorContext;
-        private GenericRepository<Domains.Customer> customerRepository;
-        private GenericRepository<Domains.Occupation> occupationRepository;
-        private GenericRepository<Domains.OccupationRating> occupationRatingRepository;
-        public UnitOfWork(PremiumCalculatorDbContext premiumCalculatorContext)
+        private CustomerRepo.ICustomerRepository customerRepository;
+        private OccupationRepo.IOccupationRepository occupationRepository;
+        private OccupationRatingRepo.IOccupationRatingRepository occupationRatingRepository;
+        
+        public UnitOfWork(PremiumCalculatorDbContext premiumCalculatorContext,
+            CustomerRepo.ICustomerRepository customerRepository,
+            OccupationRepo.IOccupationRepository occupationRepository,
+            OccupationRatingRepo.IOccupationRatingRepository occupationRatingRepository
+            )
         {
-            this.premiumCalculatorContext = premiumCalculatorContext;            
-        }        
-        public GenericRepository<Domains.Customer> CustomerRepository
+            this.premiumCalculatorContext = premiumCalculatorContext;
+            this.customerRepository = customerRepository;
+            this.occupationRepository = occupationRepository;
+            this.occupationRatingRepository = occupationRatingRepository;
+        }
+        public CustomerRepo.ICustomerRepository CustomerRepository
         {
             get
-            {
-                if (this.customerRepository == null)
-                {
-                    this.customerRepository = new GenericRepository<Domains.Customer>(this.premiumCalculatorContext);
-                }
+            {                
                 return this.customerRepository;
             }
         }
 
-        public GenericRepository<Domains.Occupation> OccupationRepository
+        public OccupationRepo.IOccupationRepository OccupationRepository
         {
             get
-            {
-                if (this.occupationRepository == null)
-                {
-                    this.occupationRepository = new GenericRepository<Domains.Occupation>(this.premiumCalculatorContext);
-                }
+            {               
                 return this.occupationRepository;
             }
         }
 
-        public GenericRepository<Domains.OccupationRating> OccupationRatingRepository
+        public OccupationRatingRepo.IOccupationRatingRepository OccupationRatingRepository
         {
             get
-            {
-                if (this.occupationRatingRepository == null)
-                {
-                    this.occupationRatingRepository = new GenericRepository<Domains.OccupationRating>(this.premiumCalculatorContext);
-                }
+            {              
                 return this.occupationRatingRepository;
             }
         }

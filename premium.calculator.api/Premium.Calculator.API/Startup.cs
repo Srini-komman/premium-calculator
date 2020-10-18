@@ -13,7 +13,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Premium.Calculator.Persistence.Contexts.PremiumCalculator;
 using Premium.Calculator.Persistence.Repositories;
-using Premium.Calculator.Persistence.Repositories.Customer;
+using CustomerRepo = Premium.Calculator.Persistence.Repositories.Customer;
+using OccupationRepo = Premium.Calculator.Persistence.Repositories.Occupation;
+using OccupationRatingRepo = Premium.Calculator.Persistence.Repositories.OccupationRating;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace API
 {
@@ -29,6 +33,18 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // ReferenceLoopHandling setting to Newtonsoft.Json to fix an issue with Dotnet core 3.0 which throws exception with Nested entities
+            services.AddControllers().AddNewtonsoftJson(options =>
+                { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
+                    options.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+                    if (options.SerializerSettings.ContractResolver != null)
+                    {
+                        var CastResolver = options.SerializerSettings.ContractResolver as DefaultContractResolver;
+                        CastResolver.NamingStrategy = null;
+                    }
+                    options.SerializerSettings.Formatting = Formatting.Indented;
+                }
+            );
             services.AddDbContext<PremiumCalculatorDbContext>(opt =>
             {
                 // Using sqLite as a data source for this test.
@@ -44,8 +60,11 @@ namespace API
                 });
             });
             services.AddControllers();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();            
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<CustomerRepo.ICustomerRepository, CustomerRepo.CustomerRepository>();
+            services.AddTransient<OccupationRepo.IOccupationRepository, OccupationRepo.OccupationRepository>();
+            services.AddTransient<OccupationRatingRepo.IOccupationRatingRepository, OccupationRatingRepo.OccupationRatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

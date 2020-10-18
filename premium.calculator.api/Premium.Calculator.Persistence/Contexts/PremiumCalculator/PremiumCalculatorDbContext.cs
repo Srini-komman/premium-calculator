@@ -20,18 +20,21 @@ namespace Premium.Calculator.Persistence.Contexts.PremiumCalculator
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            //{
-            //    relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            //}
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             // Setting up the relationship(Primary key and Foriegn key) between Occupation and Occupation Rating
-            builder.Entity<Occupation>()
+            builder.Entity<OccupationRating>(c => c.HasKey(c => new { c.Id }));
+            builder.Entity<Occupation>(c => c.HasKey(c => new { c.Id }));
+            builder.Entity<Occupation>()                
                 .HasOne(or => or.OccupationRating)
                 .WithMany(o => o.Occupations)
                 .HasForeignKey(or => or.OccupationRatingId);
 
             // Setting up the relationship(Primary key and Foriegn key) between Customer and Occupation
+            builder.Entity<Customer>(c => c.HasKey(c => new { c.Id }));
             builder.Entity<Customer>()
                 .HasOne(c => c.Occupation)
                 .WithMany(o => o.Customers)

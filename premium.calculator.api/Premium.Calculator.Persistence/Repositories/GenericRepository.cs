@@ -23,7 +23,7 @@ namespace Premium.Calculator.Persistence.Repositories
             return dbSet.Find(id);
         }
         public virtual IEnumerable<TEntity> GetAll()
-        {
+        {         
             return Context.Set<TEntity>().ToList();
         }
         public virtual async Task<IEnumerable<TEntity>> GetAllAsyn()
