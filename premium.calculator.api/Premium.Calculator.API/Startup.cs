@@ -21,6 +21,8 @@ using Newtonsoft.Json;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Premium.Calculator.API.Filters;
+using MediatR;
+using Premium.Calculator.Application.Customers;
 
 namespace API
 {
@@ -71,6 +73,7 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5000/");
                 });
             });
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddControllers();
             services.AddTransient<IUnitOfWork, UnitOfWork>();            
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
