@@ -18,6 +18,9 @@ using OccupationRepo = Premium.Calculator.Persistence.Repositories.Occupation;
 using OccupationRatingRepo = Premium.Calculator.Persistence.Repositories.OccupationRating;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Premium.Calculator.API.Filters;
 
 namespace API
 {
@@ -45,6 +48,15 @@ namespace API
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 }
             );
+
+            services
+                .AddMvc(options => {
+                    //options.EnableEndpointRouting = false;
+                    options.Filters.Add<ValidationFilter>();
+                })
+                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddDbContext<PremiumCalculatorDbContext>(opt =>
             {
                 // Using sqLite as a data source for this test.
